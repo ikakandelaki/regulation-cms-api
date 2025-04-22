@@ -1,0 +1,78 @@
+buildscript {
+	dependencies {
+		classpath('org.flywaydb:flyway-core')
+		classpath('org.flywaydb:flyway-database-oracle:10.0.0')
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id('org.flywaydb.flyway') version "10.0.0"
+}
+
+def dbUrl = System.getenv("DB_URL") ?: (project.findProperty("DB_URL") ?: null)
+def dbSchema = System.getenv("DB_SCHEMA") ?: (project.findProperty("DB_SCHEMA") ?: null)
+def dbUsername = System.getenv("DB_USERNAME") ?: (project.findProperty("DB_USERNAME") ?: null)
+def dbPassword = System.getenv("DB_PASSWORD") ?: (project.findProperty("DB_PASSWORD") ?: null)
+
+flyway {
+	url = dbUrl
+	schemas = [dbSchema]
+	user = dbUsername
+	password = dbPassword
+}
+
+group = 'com.kandex'
+version = '1.0.0-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// spring-boot-starters
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// openapi-docs
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0'
+
+	// flyway
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-oracle'
+
+	// lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// oracle-ojdbc
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+

@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: regulation-cms-api
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: ${SPRING_DATA_REDIS_PORT}
+      database: ${SPRING_DATA_REDIS_DATABASE}
+      password: ${SPRING_DATA_REDIS_PASSWORD}
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:validate}
+    show-sql: ${SPRING_JPA_SHOW_SQL:false}
+    generate-ddl: false
+
+#  security:
+#    oauth2:
+#      authorizationserver:
+#        endpoint:
+#          authorization-uri: ${SPRING_SECURITY_OAUTH2_AUTHORIZATIONSERVER_ENDPOINT_AUTHORIZATION_URI}
+#          token-uri: ${SPRING_SECURITY_OAUTH2_AUTHORIZATIONSERVER_ENDPOINT_TOKEN_URI}
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI}
+  flyway:
+    enabled: false
+  servlet:
+    multipart:
+      max-file-size: ${SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE}
